@@ -1,6 +1,7 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import VideoDetails from '../components/VideoDetails'
+import { MoviesContext } from '../context/movies'
 
 const VideoList = () => {
   const [videoList, setVideoList] = useState([])
@@ -34,14 +35,17 @@ const VideoList = () => {
       },
     ])
   }, [])
+  const { movies } = useContext(MoviesContext)
   const Wrapper = styled.div`
     padding: 40px;
   `
   return (
     <Wrapper>
-      {videoList.map((video, key) => (
-        <VideoDetails key={key} video={video} />
-      ))}
+      {movies.length !== 0 ? (
+        movies.map((video, key) => <VideoDetails key={key} video={video} />)
+      ) : (
+        <div>Empty List</div>
+      )}
     </Wrapper>
   )
 }

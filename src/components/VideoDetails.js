@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom'
 
 import { CloseCircleOutlined, FormOutlined } from '@ant-design/icons'
 import ThemeContext from '../context/theme'
+import { MoviesContext } from '../context/movies'
 
 const VideoDetails = ({ video: { id, link, name, description } }) => {
   const theme = React.useContext(ThemeContext)
-
+  const { dispatchMovies } = React.useContext(MoviesContext)
   const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -33,9 +34,10 @@ const VideoDetails = ({ video: { id, link, name, description } }) => {
   const Description = styled.p`
     font-size: 14px;
   `
-  const deleteVideo = () => {
+  const deleteVideo = (id) => {
     //call delete api
-    console.log('delete video')
+    console.log('delete video', id)
+    dispatchMovies({ type: 'DELETE', id })
   }
   return (
     <Wrapper>
@@ -53,7 +55,7 @@ const VideoDetails = ({ video: { id, link, name, description } }) => {
           {description ? <Description>{description}</Description> : null}
         </div>
         <div>
-          <CloseCircleOutlined onClick={deleteVideo} />
+          <CloseCircleOutlined onClick={() => deleteVideo(id)} />
           <div>
             <Link to={`/edit-video/${id}`}>
               <FormOutlined />

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Form, Input, Button } from 'antd'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useHistory } from 'react-router-dom'
+import { MoviesContext } from '../context/movies'
 
 const EditVideo = ({ match }) => {
+  const { dispatchMovies } = React.useContext(MoviesContext)
   const [video, setVideo] = useState({
     name: 'EasyMovie',
     description: 'description',
@@ -11,11 +13,21 @@ const EditVideo = ({ match }) => {
   useEffect(() => {
     //get video details from Api
   }, [])
-
+  const history = useHistory()
   const onFinish = (values) => {
-    console.log('Success:', values)
     // here we call the update video Api with values using this video id
     const id = match.params.videoId
+    console.log('Success:', { ...values, id })
+
+    dispatchMovies({
+      type: 'UPDATE',
+      values: {
+        id,
+        link: 'https://www.youtube.com/embed/tgbNymZ7vqY',
+        ...values,
+      },
+    })
+    history.push('/video-list')
   }
 
   const onFinishFailed = (errorInfo) => {

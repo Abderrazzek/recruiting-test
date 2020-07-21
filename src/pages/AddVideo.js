@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Form, Input, Button, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css'
+import { MoviesContext } from '../context/movies'
 
 const AddVideo = () => {
+  const { dispatchMovies } = useContext(MoviesContext)
+
   const onFinish = (values) => {
     console.log('Success:', values)
     // here we call the add video Api with values
+    dispatchMovies({
+      type: 'ADD',
+      payload: { ...values, id: Math.random(5000) },
+    })
   }
 
   const onFinishFailed = (errorInfo) => {
